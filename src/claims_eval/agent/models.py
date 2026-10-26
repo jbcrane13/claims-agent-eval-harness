@@ -54,6 +54,8 @@ class AnthropicModel:
             text="\n".join(text_parts) or None,
             tool_calls=calls,
             usage=Usage(resp.usage.input_tokens, resp.usage.output_tokens),
+            # "max_tokens" mid tool call or "refusal" show up in the report when the answer is unusable.
+            stop_reason=resp.stop_reason,
         )
 
 
@@ -110,21 +112,31 @@ class GeminiModel:
         )
         resp = await self._client.aio.models.generate_content(
             model=self.model, contents=self._to_gemini(messages), config=config)
-        content = resp.candidates[0].content
+        usage = resp.usage_metadata
+        tokens = Usage(usage.prompt_token_count or 0,
+                       # Thinking tokens are billed as output.
+                       (usage.candidates_token_count or 0) + (usage.thoughts_token_count or 0)) if usage else Usage()
+        candidate = resp.candidates[0] if resp.candidates else None
+        finish = str(candidate.finish_reason) if candidate and candidate.finish_reason else None
+        content = candidate.content if candidate else None
+        if content is None or not content.parts:
+            # A safety stop or malformed call: the model gave no usable answer. Scored as the agent's failure.
+            return ModelTurn(text=None, usage=tokens, stop_reason=finish or "no candidate")
         text_parts, calls = [], []
-        for i, part in enumerate(content.parts or []):
+        for i, part in enumerate(content.parts):
             if part.function_call:
                 fc = part.function_call
-                calls.append(ToolCall(id=fc.id or f"{call_id}-{i}", name=fc.name, args=dict(fc.args or {})))
+                # Gemini may omit call ids. Use a local one for our trace, marked so it is never sent back.
+                calls.append(ToolCall(id=fc.id or f"{LOCAL_ID}{call_id}-{i}", name=fc.name, args=dict(fc.args or {})))
             elif part.text and not part.thought:
                 text_parts.append(part.text)
-        usage = resp.usage_metadata
         return ModelTurn(
             text="\n".join(text_parts) or None,
             tool_calls=calls,
-            usage=Usage(usage.prompt_token_count or 0, usage.candidates_token_count or 0) if usage else Usage(),
+            usage=tokens,
             # Echo the native turn back verbatim; Gemini rejects function calls stripped of thought signatures.
             raw={"gemini_content": content.model_dump(mode="json", exclude_none=True)},
+            stop_reason=finish,
         )
 
     def _to_gemini(self, messages: list[dict[str, Any]]) -> list[Any]:
@@ -139,18 +151,27 @@ class GeminiModel:
                     out.append(t.Content.model_validate(raw))
                 else:
                     parts = [t.Part(text=m["text"])] if m.get("text") else []
-                    parts += [t.Part(function_call=t.FunctionCall(id=tc["id"], name=tc["name"], args=tc["args"]))
+                    parts += [t.Part(function_call=t.FunctionCall(id=_vendor_id(tc["id"]), name=tc["name"],
+                                                                  args=tc["args"]))
                               for tc in m["tool_calls"]]
                     out.append(t.Content(role="model", parts=parts))
             elif m["role"] == "tool":
                 key = "error" if m["is_error"] else "result"
                 part = t.Part.from_function_response(name=m["name"], response={key: m["content"]})
-                part.function_response.id = m["tool_call_id"]
+                part.function_response.id = _vendor_id(m["tool_call_id"])
                 if out and out[-1].role == "user" and out[-1].parts and out[-1].parts[0].function_response:
                     out[-1].parts.append(part)
                 else:
                     out.append(t.Content(role="user", parts=[part]))
         return out
+
+
+LOCAL_ID = "local:"
+
+
+def _vendor_id(call_id: str) -> str | None:
+    """Only echo ids the vendor issued. Ids we made up for the trace stay local."""
+    return None if call_id.startswith(LOCAL_ID) else call_id
 
 
 def make_model(spec: str, record_to: str | None = None) -> Model:

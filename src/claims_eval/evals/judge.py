@@ -1,13 +1,14 @@
 """LLM-as-judge for the parts of the rationale that rules can't check.
 
-Three rules keep the judge honest:
+The judge is advisory in this repo: its results are reported, never gated. Before anyone gates on it:
 1. Binary rubric items, not a 1-10 score. "Did it state the next step?" is answerable; "rate the
    quality 1-10" drifts between runs and between judges.
-2. Use a different model family to judge than the one under test, so a model doesn't grade its own
-   habits as correct.
-3. Calibrate before trusting. `claims-eval calibrate` scores human-labeled examples and reports
-   Cohen's kappa per item. Until kappa clears judge.min_kappa in eval_config.toml, judge scores are
-   reported but never gate a release.
+2. A different model family judges than the one under test, so a model doesn't grade its own habits
+   as correct. The CLI warns when they match.
+3. Calibrate. `claims-eval calibrate` scores human-labeled examples and reports Cohen's kappa per item.
+   An unparseable verdict counts as a disagreement, so a judge can't look better by failing to answer
+   the hard ones. The 12 examples shipped here demonstrate the method; trusting a judge takes 50+ per
+   item with both classes well represented, built from real traces.
 """
 
 from __future__ import annotations
@@ -69,11 +70,13 @@ async def calibrate(model: Model, path: Path) -> dict[str, Any]:
                 for ex in examples]
     report: dict[str, Any] = {"judge": model.name, "examples": len(examples), "items": {}}
     for item in RUBRIC:
-        pairs = [(ex["labels"][item], v[item]) for ex, v in zip(examples, verdicts) if v[item] is not None]
-        human, judged = [p[0] for p in pairs], [p[1] for p in pairs]
+        human = [ex["labels"][item] for ex in examples]
+        # Unparsed (None) becomes the opposite of the human label: a non-answer is a disagreement.
+        judged = [v[item] if v[item] is not None else not h for v, h in zip(verdicts, human)]
         report["items"][item] = {
-            "agreement": round(sum(h == j for h, j in pairs) / len(pairs), 3) if pairs else None,
-            "kappa": cohen_kappa(human, judged) if pairs else None,
-            "unparsed": len(examples) - len(pairs),
+            "agreement": round(sum(h == j for h, j in zip(human, judged)) / len(human), 3),
+            "kappa": cohen_kappa(human, judged),
+            "unparsed": sum(1 for v in verdicts if v[item] is None),
+            "human_false": human.count(False),
         }
     return report

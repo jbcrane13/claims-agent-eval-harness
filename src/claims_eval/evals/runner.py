@@ -11,7 +11,7 @@ from typing import Any
 from claims_eval.agent.loop import AgentResult, run_agent
 from claims_eval.agent.tools import ToolBox, Transport, open_toolbox
 from claims_eval.agent.types import Model
-from claims_eval.evals.scorers import score_run
+from claims_eval.evals.scorers import run_passed, score_run
 
 
 def load_cases(dataset_dir: Path, names: list[str]) -> list[dict[str, Any]]:
@@ -30,20 +30,28 @@ async def _run_one(case, run_idx, model: Model, toolbox: ToolBox, config, sem) -
     async with sem:
         result: AgentResult = await run_agent(case["instruction"], model, toolbox,
                                               call_prefix=f"{case['case_id']}/r{run_idx}")
-    scores = score_run(case, result, config)
+    if result.infra_error:
+        # Not the agent's fault and not evidence about it either way: excluded from scoring.
+        scores, passed, critical = [], None, []
+    else:
+        scores = score_run(case, result, config)
+        passed = run_passed(scores)
+        critical = [s.name for s in scores if s.critical and s.passed is False]
     return {
         "case_id": case["case_id"],
         "run": run_idx,
-        "passed": all(s.passed for s in scores),
-        "critical_failures": [s.name for s in scores if s.critical and not s.passed],
+        "passed": passed,
+        "critical_failures": critical,
         "scores": [asdict(s) for s in scores],
         "output": result.output,
-        "final_text": result.final_text if result.output is None else None,
+        "final_text": result.final_text,
         "trace": [asdict(step) for step in result.trace],
         "usage": asdict(result.usage),
         "turns": result.turns,
         "latency_ms": result.latency_ms,
         "error": result.error,
+        "infra_error": result.infra_error,
+        "stop_reason": result.stop_reason,
     }
 
 

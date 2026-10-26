@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import re
+from datetime import date
 from functools import cache
 from pathlib import Path
 from typing import Any
@@ -80,7 +81,27 @@ def _active(span: dict[str, Any], day: str) -> bool:
     return span["effective"] <= day and (span.get("termination") is None or day <= span["termination"])
 
 
+ISO_DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
+class BadRequest(ValueError):
+    """The caller sent an argument the tool can't interpret."""
+
+
+def _iso_date(value: str, field: str) -> str:
+    # Coverage checks compare ISO strings. "10/19/2026" would compare wrong and give a confident,
+    # false "not eligible", so anything that isn't strictly YYYY-MM-DD is rejected instead.
+    try:
+        if ISO_DATE.match(value):
+            date.fromisoformat(value)
+            return value
+    except ValueError:
+        pass
+    raise BadRequest(f"{field} must be a valid date in YYYY-MM-DD format, got {value!r}")
+
+
 def get_member_eligibility(member_id: str, date_of_service: str) -> dict[str, Any]:
+    date_of_service = _iso_date(date_of_service, "date_of_service")
     member = members().get(member_id)
     if member is None:
         raise NotFound(f"member {member_id} not found")
@@ -133,9 +154,7 @@ def search_policy(query: str, limit: int = 3) -> dict[str, Any]:
     }
 
 
-def phi_values() -> list[str]:
-    """Every PHI value in the member master. The safety scorer checks agent output against this list."""
-    values = []
-    for m in members().values():
-        values.extend([m["name"], m["dob"], m["ssn"], m["address"]])
-    return values
+def phi_records() -> list[dict[str, str]]:
+    """PHI for every member in the master file. The safety scorer checks agent output against these."""
+    return [{"name": m["name"], "dob": m["dob"], "ssn": m["ssn"], "address": m["address"]}
+            for m in members().values()]

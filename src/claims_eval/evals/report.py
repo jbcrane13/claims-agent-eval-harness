@@ -13,10 +13,13 @@ def _pct(x: float) -> str:
     return f"{x:.1%}"
 
 
+COUNT_CHECKS = {"safety_failures", "counterfactual_flips"}
+
+
 def _fmt(name: str, value: float | None) -> str:
     if value is None:
         return "–"
-    return str(int(value)) if name == "safety_failures" else _pct(value)
+    return str(int(value)) if name in COUNT_CHECKS else _pct(value)
 
 
 def markdown_summary(meta: dict[str, Any], metrics: dict[str, Any], checks: list[Check] | None) -> str:
@@ -30,6 +33,8 @@ def markdown_summary(meta: dict[str, Any], metrics: dict[str, Any], checks: list
         f"| pass^{metrics['runs_per_case']} | {_pct(metrics['pass_hat_k'])} |",
         f"| action accuracy | {_pct(metrics['action_accuracy'])} |",
         f"| safety failures | {metrics['safety_failures']} |",
+        f"| counterfactual flips | {metrics['counterfactual']['flips']} |",
+        f"| infra errors (excluded) | {metrics['infra_errors']} |",
     ]
     if checks:
         lines += ["", "| Gate check | Result | Current | Baseline | Limit | Note |", "|---|---|---|---|---|---|"]
@@ -69,6 +74,7 @@ code{padding:1px 5px}pre{padding:10px;overflow-x:auto;white-space:pre-wrap;word-
 details{background:var(--panel);border:1px solid var(--line);border-radius:10px;margin:8px 0;padding:8px 12px}
 summary{cursor:pointer;font-weight:600}.runs{display:inline-flex;gap:4px;margin-left:8px}
 .dot{width:10px;height:10px;border-radius:50%;display:inline-block}.dot.p{background:var(--ok)}.dot.f{background:var(--bad)}
+.dot.i{background:var(--warn)}
 .wrap{overflow-x:auto}
 """
 
@@ -79,6 +85,7 @@ def _tile(label: str, value: str, cls: str = "") -> str:
 
 def html_report(meta: dict[str, Any], metrics: dict[str, Any], records: list[dict[str, Any]],
                 cases: list[dict[str, Any]], checks: list[Check] | None) -> str:
+    case_index_all = {c["case_id"]: c for c in cases}
     if checks is None:
         verdict = '<span class="verdict v-none">no baseline</span>'
     elif all(c.passed for c in checks):
@@ -92,7 +99,12 @@ def html_report(meta: dict[str, Any], metrics: dict[str, Any], records: list[dic
         _tile("pass rate (all runs)", _pct(metrics["pass_rate"])),
         _tile(f"pass^{k} (every run passes)", _pct(metrics["pass_hat_k"])),
         _tile("action accuracy", _pct(metrics["action_accuracy"])),
-        _tile("safety failures", str(metrics["safety_failures"]), "bad" if metrics["safety_failures"] else "ok"),
+        _tile("safety failures" + (f" (≤{metrics['safety_rate_upper_95']:.1%}/run at 95%)"
+                                    if metrics.get("safety_rate_upper_95") else ""),
+              str(metrics["safety_failures"]), "bad" if metrics["safety_failures"] else "ok"),
+        _tile("counterfactual flips", str(metrics["counterfactual"]["flips"]),
+              "bad" if metrics["counterfactual"]["flips"] else "ok"),
+        _tile("infra errors (not scored)", str(metrics["infra_errors"]), "warn" if metrics["infra_errors"] else ""),
         _tile("latency p95", f"{metrics['latency_ms_p95']:,} ms"),
         _tile("tokens per run", tokens),
     ])
@@ -107,38 +119,57 @@ def html_report(meta: dict[str, Any], metrics: dict[str, Any], records: list[dic
         gate_html = (f"<h2>Release gate</h2><div class='wrap'><table><tr><th>Check</th><th>Result</th>"
                      f"<th>Current</th><th>Baseline</th><th>Limit</th><th>Note</th></tr>{rows}</table></div>")
 
-    crit = {"forbidden_tools", "forbidden_action", "no_unwarranted_escalation", "phi_leak", "citations_grounded"}
+    crit = set(metrics["critical_scorers"])
     scorer_rows = "".join(
         f"<tr><td><code>{escape(n)}</code>{' <span class=warn>safety</span>' if n in crit else ''}</td>"
-        f"<td class='num'>{_pct(v)}</td></tr>" for n, v in metrics["scorers"].items())
+        f"<td class='num'>{_pct(v) if v is not None else '–'}</td></tr>" for n, v in metrics["scorers"].items())
+
+    cf = metrics["counterfactual"]
+    cf_rows = "".join(f"<tr><td>{escape(g)}</td><td>{escape(', '.join(f'{k}: {v}' for k, v in d.items()))}</td></tr>"
+                      for g, d in cf["flipped_groups"].items())
+    cf_html = (f"<p>{cf['groups_compared']} golden cases were each copied with the member moved to the other "
+               f"lines of business; nothing else changed. A flip means the usual decision differed between copies.</p>"
+               + (f"<table><tr><th>Case</th><th>Decision by line of business</th></tr>{cf_rows}</table>"
+                  if cf_rows else "<p class='ok'>No flips.</p>"))
 
     slice_html = ""
     for dim, s in metrics["slices"].items():
         rows = "".join(f"<tr><td>{escape(v)}</td><td class='num'>{_pct(g['pass_rate'])}</td>"
                        f"<td class='num'>{g['cases']}</td></tr>" for v, g in s["groups"].items())
         slice_html += (f"<h3 style='font-size:14px;margin:14px 0 6px'>{escape(dim)} "
-                       f"<span class='sub'>max gap {_pct(s['max_gap'])}</span></h3>"
+                       f"<span class='sub'>largest gap {_pct(s['max_gap'])} across {s['compared_groups']} "
+                       f"comparable groups</span></h3>"
                        f"<table><tr><th>Group</th><th>Pass rate</th><th>Cases</th></tr>{rows}</table>")
 
     by_case: dict[str, list[dict[str, Any]]] = {}
     for r in records:
         by_case.setdefault(r["case_id"], []).append(r)
-    case_index = {c["case_id"]: c for c in cases}
+    # Counterfactual copies only appear when one of their runs failed; otherwise they'd bury the rest.
+    by_case = {cid: runs for cid, runs in by_case.items()
+               if case_index_all[cid]["dataset"] != "counterfactual" or not all(r["passed"] for r in runs)}
+    case_index = case_index_all
     details = []
     for cid in sorted(by_case, key=lambda c: (all(r["passed"] for r in by_case[c]), c)):
         runs = sorted(by_case[cid], key=lambda r: r["run"])
         case = case_index[cid]
-        dots = "".join(f"<span class='dot {'p' if r['passed'] else 'f'}'></span>" for r in runs)
+        dots = "".join(f"<span class='dot {'p' if r['passed'] else ('i' if r['passed'] is None else 'f')}'></span>"
+                       for r in runs)
         body = [f"<p class='sub'>{escape(case['instruction'])}<br>expected <code>{escape(case['expected']['action'])}"
                 f"</code> {('→ <code>' + escape(case['expected']['queue']) + '</code>') if case['expected']['queue'] else ''}"
                 f" · scenario <code>{escape(case['scenario'])}</code></p>"]
         for r in runs:
-            fails = [s for s in r["scores"] if not s["passed"]]
+            fails = [s for s in r["scores"] if s["passed"] is False]
+            if r.get("infra_error"):
+                body.append(f"<p><b>Run {r['run'] + 1}</b> <span class='warn'>infrastructure error, not scored:"
+                            f"</span> {escape(r['infra_error'])}</p>")
+                continue
             fail_html = "".join(f"<li><code>{escape(s['name'])}</code>{' <b class=bad>critical</b>' if s['critical'] else ''}"
                                 f" {escape(s['detail'])}</li>" for s in fails) or "<li class='ok'>all scorers passed</li>"
             trace = "\n".join(f"{i + 1}. {s['tool']}({json.dumps(s['args'])}){' → ERROR' if s['is_error'] else ''}"
                               for i, s in enumerate(r["trace"]))
             out = json.dumps(r["output"], indent=2) if r["output"] else (r.get("final_text") or r.get("error") or "")
+            if r.get("stop_reason") and not r["output"]:
+                out += f"\n[model stop reason: {r['stop_reason']}]"
             body.append(f"<p><b>Run {r['run'] + 1}</b></p><ul>{fail_html}</ul>"
                         f"<pre>{escape(trace) or '(no tool calls)'}</pre><pre>{escape(out)}</pre>")
         open_attr = " open" if not all(r["passed"] for r in runs) and len(details) < 3 else ""
@@ -150,13 +181,16 @@ def html_report(meta: dict[str, Any], metrics: dict[str, Any], records: list[dic
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>Claims Agent Eval</title>
 <style>{CSS}</style></head><body><main>
 <h1>Claims agent eval {verdict}</h1>
-<div class="sub">Model <code>{escape(meta['model'])}</code> · {metrics['cases']} cases × {k} runs ·
+<div class="sub">Model <code>{escape(meta['model'])}</code> · {metrics['cases']} cases × {k} runs
+(+ {metrics['counterfactual']['groups_compared'] * 2} counterfactual copies) · commit {escape(str(meta.get('git_sha')))} ·
 {escape(meta['started'])} · synthetic data only</div>
 <div class="tiles">{tiles}</div>
 {gate_html}
 <h2>Scorers</h2><table><tr><th>Scorer</th><th>Pass rate</th></tr>{scorer_rows}</table>
-<h2>Slices (golden set)</h2>{slice_html}
-<p class="sub">Slices with fewer than the configured minimum cases are shown but not compared. With synthetic
-data and groups this small, treat gaps as a smoke alarm, not a measurement.</p>
+<h2>Counterfactual fairness</h2>{cf_html}
+<h2>Slices (golden set, descriptive)</h2>{slice_html}
+<p class="sub">Observed pass rates by group. A gap here can come from bias or from the groups holding
+different kinds of cases, and with this few cases it can't tell which. That is why the gate checks
+counterfactual flips instead of these gaps.</p>
 <h2>Cases</h2>{''.join(details)}
 </main></body></html>"""

@@ -10,9 +10,12 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import hashlib
 import json
+import subprocess
 import sys
 import tomllib
+from importlib.metadata import version
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -32,6 +35,28 @@ def load_config(path: Path) -> dict[str, Any]:
 
 def _load_json(path: Path) -> dict[str, Any] | None:
     return json.loads(path.read_text()) if path.exists() else None
+
+
+def run_meta(model_name: str, cases: list[dict[str, Any]], runs: int, datasets: list[str],
+             config_path: Path) -> dict[str, Any]:
+    """What the gate needs to know two runs are comparable, plus what a reader needs to reproduce one."""
+    case_set = json.dumps(sorted([[c["case_id"], c["instruction"], c["expected"]] for c in cases]), sort_keys=True)
+    try:
+        sha = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True,
+                             check=True).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        sha = None
+    return {
+        "model": model_name,
+        "started": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
+        "runs": runs,
+        "datasets": datasets,
+        "case_set_hash": hashlib.sha256(case_set.encode()).hexdigest()[:12],
+        "config_hash": hashlib.sha256(config_path.read_bytes()).hexdigest()[:12],
+        "git_sha": sha,
+        "mcp_sdk": version("mcp"),
+        "sampling": "vendor defaults",
+    }
 
 
 def _print_checks(checks: list[gate.Check]) -> None:
@@ -60,10 +85,13 @@ def cmd_run(args: argparse.Namespace) -> int:
     runs = args.runs or config["run"]["runs"]
     cases = load_cases(DATASETS, datasets)
     model = make_model(args.model, record_to=args.record)
+    if args.judge and args.judge.split(":")[0] == args.model.split(":")[0]:
+        print(f"warning: judge and agent are both {args.judge.split(':')[0]}; a model family tends to grade "
+              "its own habits as correct. Prefer a different family.", file=sys.stderr)
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
 
-    started = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    meta = run_meta(model.name, cases, runs, datasets, Path(args.config))
     print(f"running {len(cases)} cases x {runs} runs against {model.name} ...", flush=True)
     records = asyncio.run(run_suite(cases, model, config, runs, transport=args.transport,
                                     concurrency=args.concurrency, server_log=out / "server.log"))
@@ -77,16 +105,22 @@ def cmd_run(args: argparse.Namespace) -> int:
             item: round(sum(1 for j in judged if j.get(item)) / len(judged), 4) if judged else None
             for item in ("explains_pend_reason", "states_next_step", "no_unsupported_claims")}}
 
-    meta = {"model": model.name, "started": started, "runs": runs, "datasets": datasets}
     baseline = _load_json(Path(args.baseline))
-    checks = gate.evaluate(m, baseline["metrics"], config) if baseline else None
+    checks = None
+    if baseline:
+        try:
+            gate.require_comparable(meta, baseline["meta"])
+            checks = gate.evaluate(m, baseline["metrics"], config)
+        except HarnessError as exc:
+            print(f"not gated: {exc}")
 
     (out / "run.json").write_text(json.dumps({"meta": meta, "metrics": m, "records": records}, indent=2))
     (out / "report.html").write_text(report.html_report(meta, m, records, cases, checks))
     (out / "summary.md").write_text(report.markdown_summary(meta, m, checks))
 
     print(f"pass rate {m['pass_rate']:.1%} · pass^{runs} {m['pass_hat_k']:.1%} · "
-          f"action accuracy {m['action_accuracy']:.1%} · safety failures {m['safety_failures']}")
+          f"action accuracy {m['action_accuracy']:.1%} · safety failures {m['safety_failures']} · "
+          f"counterfactual flips {m['counterfactual']['flips']} · infra errors {m['infra_errors']}")
     if checks:
         print(f"gate vs {args.baseline}: {'PASS' if gate.passed(checks) else 'BLOCKED'}")
         _print_checks(checks)
@@ -100,6 +134,8 @@ def cmd_gate(args: argparse.Namespace) -> int:
     if run is None:
         raise HarnessError(f"no results at {args.results}; run `claims-eval run` first")
     baseline = _load_json(Path(args.baseline))
+    if baseline:
+        gate.require_comparable(run["meta"], baseline["meta"])
     checks = gate.evaluate(run["metrics"], baseline["metrics"] if baseline else None, config)
     ok = gate.passed(checks)
     print(f"gate: {'PASS' if ok else 'BLOCKED'}  ({run['meta']['model']} vs {args.baseline})")
@@ -126,12 +162,15 @@ def cmd_calibrate(args: argparse.Namespace) -> int:
     config = load_config(Path(args.config))
     result = asyncio.run(calibrate(make_model(args.judge), DATASETS / "judge_calibration.jsonl"))
     min_kappa = config["judge"]["min_kappa"]
-    result["trusted"] = all((v["kappa"] or 0) >= min_kappa for v in result["items"].values())
+    result["meets_bar"] = all((v["kappa"] or 0) >= min_kappa for v in result["items"].values())
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
     Path(args.out).write_text(json.dumps(result, indent=2))
     for item, v in result["items"].items():
-        print(f"  {item:<24} agreement {v['agreement']}  kappa {v['kappa']}  unparsed {v['unparsed']}")
-    print(f"judge {'trusted' if result['trusted'] else 'NOT trusted'} (min kappa {min_kappa}); wrote {args.out}")
+        print(f"  {item:<24} agreement {v['agreement']}  kappa {v['kappa']}  unparsed {v['unparsed']}  "
+              f"human-false examples {v['human_false']}")
+    verdict = "meets" if result["meets_bar"] else "does NOT meet"
+    print(f"judge {verdict} the kappa bar ({min_kappa}) on {result['examples']} examples; that is too few to "
+          f"rely on, so judge results stay advisory either way. Wrote {args.out}")
     return 0
 
 

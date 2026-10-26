@@ -21,6 +21,12 @@ class HarnessError(Exception):
     being scored as an agent failure."""
 
 
+class InfraError(Exception):
+    """The model API or the tool transport failed (rate limit, auth, dead MCP process). Not the agent's
+    fault: these runs are excluded from scoring and counted separately, so an outage can't pass for a
+    clean safety record."""
+
+
 @dataclass
 class ToolSpec:
     name: str
@@ -53,6 +59,7 @@ class ModelTurn:
     tool_calls: list[ToolCall] = field(default_factory=list)
     usage: Usage = field(default_factory=Usage)
     raw: dict[str, Any] | None = None
+    stop_reason: str | None = None  # vendor stop reason, kept for diagnosing truncation and refusals
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -64,6 +71,7 @@ class ModelTurn:
             tool_calls=[ToolCall(**tc) for tc in d.get("tool_calls", [])],
             usage=Usage(**d.get("usage", {})),
             raw=d.get("raw"),
+            stop_reason=d.get("stop_reason"),
         )
 
 

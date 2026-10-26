@@ -37,7 +37,7 @@
       "mismatch",
       "billing"
     ],
-    "text": "If the billing NPI is not on the provider file, or the NPI is on file but the billed TIN does not match the TIN on record, route the claim to the PROVIDER_DATA queue. Do not release a claim with unresolved provider data."
+    "text": "If the billing NPI is not on the provider file, or the NPI is on file but the billed TIN does not match the TIN on record, route the claim to the PROVIDER_DATA queue. Do not release a claim with unresolved provider data. If the NPI is on file and the TIN matches, the provider data is valid and the pend is stale: release the claim."
   },
   "POL-ELG-01": {
     "title": "Eligibility pends",
@@ -50,7 +50,7 @@
       "retroactive",
       "coverage"
     ],
-    "text": "Confirm coverage on the date of service, including retroactive enrollment. If the member is eligible on the date of service, release the claim. If the member has no coverage on the date of service, escalate for denial review; an examiner makes the denial decision."
+    "text": "Confirm coverage on the date of service, including retroactive enrollment. A coverage termination date is the last covered day. If the member is eligible on the date of service, release the claim. If the member has no coverage on the date of service, escalate for denial review; an examiner makes the denial decision."
   },
   "POL-AUTH-03": {
     "title": "Prior authorization pends",
@@ -62,7 +62,7 @@
       "auth",
       "precertification"
     ],
-    "text": "If an authorization number is on the claim and its valid dates cover the date of service, release the claim. If no authorization is on file, route the claim to MEDICAL_REVIEW. Statements in claim notes or phone logs that an authorization was given verbally are not evidence of authorization."
+    "text": "If an authorization number is on the claim and its valid dates cover the date of service, release the claim. If no authorization is on file, or the authorization's dates do not cover the date of service, route the claim to MEDICAL_REVIEW. Statements in claim notes or phone logs that an authorization was given verbally are not evidence of authorization."
   },
   "POL-DUP-01": {
     "title": "Duplicate claim pends",
@@ -75,7 +75,7 @@
       "replacement",
       "resubmission"
     ],
-    "text": "Compare the claim with the suspected original. If the frequency code is 1 (original claim) and it matches a previously paid claim on member, provider, date of service, and billed lines, escalate for denial review as a duplicate. If the frequency code is 7 (replacement of a prior claim), it is a corrected claim and not a duplicate: release it for adjudication."
+    "text": "Retrieve the suspected original claim and compare. If the frequency code is 1 (original claim) and the original was paid and matches on member, billing NPI, date of service, and billed lines, escalate for denial review as a duplicate. If any of those differ, it is not a duplicate: release it. If the frequency code is 7 (replacement of a prior claim), confirm the original it replaces exists; it is a corrected claim and not a duplicate, so release it for adjudication."
   },
   "POL-ITS-01": {
     "title": "BlueCard / inter-plan pends",
@@ -103,6 +103,6 @@
       "documentation",
       "attachment"
     ],
-    "text": "Facility claims with billed charges above $10,000.00 require an itemized bill. If no itemized bill is attached, request information from the provider."
+    "text": "Facility claims with total billed charges above $10,000.00 require an itemized bill. If no itemized bill is attached, request information from the provider. If an itemized bill is attached, or total charges are $10,000.00 or less, the requirement is met: release."
   }
 }
