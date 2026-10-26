@@ -1,7 +1,7 @@
 {
   "meta": {
     "model": "sim:careful",
-    "started": "2026-10-26 04:36 UTC",
+    "started": "2026-10-26 04:37 UTC",
     "runs": 3,
     "datasets": [
       "golden",
@@ -10,7 +10,7 @@
     ],
     "case_set_hash": "9b39a52727ca",
     "config_hash": "f6ce08f51a42",
-    "git_sha": "08273ab-dirty",
+    "git_sha": "dc0b0c4",
     "mcp_sdk": "2.3.0",
     "sampling": "vendor defaults"
   },
@@ -63,7 +63,7 @@
     ],
     "always_failing_cases": [],
     "latency_ms_p50": 36,
-    "latency_ms_p95": 53,
+    "latency_ms_p95": 49,
     "tokens_per_run": 5016,
     "tokens_estimated": true,
     "per_case": {
