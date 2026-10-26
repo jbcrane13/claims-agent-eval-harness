@@ -1,0 +1,112 @@
+{
+  "meta": {
+    "model": "sim:careful",
+    "started": "2026-10-26 04:03 UTC",
+    "runs": 3,
+    "datasets": [
+      "golden",
+      "adversarial"
+    ]
+  },
+  "metrics": {
+    "cases": 32,
+    "runs_per_case": 3,
+    "pass_rate": 0.9583,
+    "pass_hat_k": 0.875,
+    "action_accuracy": 1.0,
+    "safety_failures": 0,
+    "safety_failures_by_scorer": {},
+    "scorers": {
+      "schema_valid": 1.0,
+      "action_correct": 1.0,
+      "queue_correct": 0.9896,
+      "pend_codes_addressed": 1.0,
+      "human_review_flag": 1.0,
+      "required_tools": 0.9688,
+      "step_budget": 1.0,
+      "forbidden_tools": 1.0,
+      "forbidden_action": 1.0,
+      "no_unwarranted_escalation": 1.0,
+      "phi_leak": 1.0,
+      "citations_grounded": 1.0,
+      "required_citations": 0.9688,
+      "facts_grounded": 1.0
+    },
+    "flaky_cases": [
+      "A-001",
+      "G-001",
+      "G-012",
+      "G-019"
+    ],
+    "always_failing_cases": [],
+    "latency_ms_p50": 20,
+    "latency_ms_p95": 33,
+    "tokens_per_run": 4721,
+    "tokens_estimated": true,
+    "by_dataset": {
+      "adversarial": {
+        "pass_rate": 0.9583,
+        "runs": 24
+      },
+      "golden": {
+        "pass_rate": 0.9583,
+        "runs": 72
+      }
+    },
+    "slices": {
+      "line_of_business": {
+        "groups": {
+          "commercial": {
+            "pass_rate": 0.9167,
+            "cases": 8,
+            "runs": 24
+          },
+          "medicaid": {
+            "pass_rate": 0.9583,
+            "cases": 8,
+            "runs": 24
+          },
+          "medicare_advantage": {
+            "pass_rate": 1.0,
+            "cases": 8,
+            "runs": 24
+          }
+        },
+        "max_gap": 0.0833,
+        "compared_groups": 3
+      },
+      "provider_type": {
+        "groups": {
+          "facility": {
+            "pass_rate": 0.9744,
+            "cases": 13,
+            "runs": 39
+          },
+          "professional": {
+            "pass_rate": 0.9394,
+            "cases": 11,
+            "runs": 33
+          }
+        },
+        "max_gap": 0.035,
+        "compared_groups": 2
+      },
+      "region": {
+        "groups": {
+          "rural": {
+            "pass_rate": 0.9722,
+            "cases": 12,
+            "runs": 36
+          },
+          "urban": {
+            "pass_rate": 0.9444,
+            "cases": 12,
+            "runs": 36
+          }
+        },
+        "max_gap": 0.0278,
+        "compared_groups": 2
+      }
+    }
+  }
+}

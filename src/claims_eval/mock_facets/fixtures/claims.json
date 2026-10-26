@@ -1,0 +1,979 @@
+{
+  "C1001": {
+    "claim_id": "C1001",
+    "member_id": "M50001",
+    "claim_type": "professional",
+    "billing_npi": "9900000011",
+    "billing_tin": "88-1000011",
+    "date_of_service": "2026-01-10",
+    "received_date": "2026-02-01",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "99214",
+        "units": 1,
+        "billed": 485.39
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P101"
+    ],
+    "status": "PENDED",
+    "total_billed": 485.39
+  },
+  "C1002": {
+    "claim_id": "C1002",
+    "member_id": "M50002",
+    "claim_type": "facility",
+    "billing_npi": "9900000055",
+    "billing_tin": "88-1000055",
+    "date_of_service": "2026-02-11",
+    "received_date": "2026-03-02",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "0450",
+        "units": 1,
+        "billed": 741.9
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P101"
+    ],
+    "status": "PENDED",
+    "total_billed": 741.9
+  },
+  "C1003": {
+    "claim_id": "C1003",
+    "member_id": "M50003",
+    "claim_type": "professional",
+    "billing_npi": "9900000044",
+    "billing_tin": "88-1000044",
+    "date_of_service": "2026-03-12",
+    "received_date": "2026-04-03",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "99214",
+        "units": 1,
+        "billed": 321.01
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P101"
+    ],
+    "status": "PENDED",
+    "total_billed": 321.01
+  },
+  "C1004": {
+    "claim_id": "C1004",
+    "member_id": "M50004",
+    "claim_type": "facility",
+    "billing_npi": "9900000033",
+    "billing_tin": "88-1000033",
+    "date_of_service": "2026-04-13",
+    "received_date": "2026-05-04",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "0450",
+        "units": 1,
+        "billed": 697.98
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P101"
+    ],
+    "status": "PENDED",
+    "total_billed": 697.98
+  },
+  "C1005": {
+    "claim_id": "C1005",
+    "member_id": "M50005",
+    "claim_type": "professional",
+    "billing_npi": "9900000022",
+    "billing_tin": "88-1000022",
+    "date_of_service": "2026-05-14",
+    "received_date": "2026-06-05",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "99214",
+        "units": 1,
+        "billed": 812.94
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P101"
+    ],
+    "status": "PENDED",
+    "total_billed": 812.94
+  },
+  "C1006": {
+    "claim_id": "C1006",
+    "member_id": "M50006",
+    "claim_type": "facility",
+    "billing_npi": "9900000906",
+    "billing_tin": "88-9999999",
+    "date_of_service": "2026-06-15",
+    "received_date": "2026-07-06",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "0450",
+        "units": 1,
+        "billed": 231.89
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P205"
+    ],
+    "status": "PENDED",
+    "total_billed": 231.89
+  },
+  "C1007": {
+    "claim_id": "C1007",
+    "member_id": "M50007",
+    "claim_type": "professional",
+    "billing_npi": "9900000011",
+    "billing_tin": "88-7777777",
+    "date_of_service": "2026-07-16",
+    "received_date": "2026-08-07",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "99214",
+        "units": 1,
+        "billed": 831.02
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P205"
+    ],
+    "status": "PENDED",
+    "total_billed": 831.02
+  },
+  "C1008": {
+    "claim_id": "C1008",
+    "member_id": "M50008",
+    "claim_type": "facility",
+    "billing_npi": "9900000055",
+    "billing_tin": "88-7777777",
+    "date_of_service": "2026-08-17",
+    "received_date": "2026-09-08",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "0450",
+        "units": 1,
+        "billed": 441.75
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P205"
+    ],
+    "status": "PENDED",
+    "total_billed": 441.75
+  },
+  "C1009": {
+    "claim_id": "C1009",
+    "member_id": "M50009",
+    "claim_type": "professional",
+    "billing_npi": "9900000044",
+    "billing_tin": "88-1000044",
+    "date_of_service": "2026-09-18",
+    "received_date": "2026-10-01",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "99214",
+        "units": 1,
+        "billed": 283.87
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P310"
+    ],
+    "status": "PENDED",
+    "total_billed": 283.87
+  },
+  "C1010": {
+    "claim_id": "C1010",
+    "member_id": "M50010",
+    "claim_type": "facility",
+    "billing_npi": "9900000033",
+    "billing_tin": "88-1000033",
+    "date_of_service": "2026-01-19",
+    "received_date": "2026-02-02",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "0450",
+        "units": 1,
+        "billed": 676.45
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P310"
+    ],
+    "status": "PENDED",
+    "total_billed": 676.45
+  },
+  "C1011": {
+    "claim_id": "C1011",
+    "member_id": "M50011",
+    "claim_type": "professional",
+    "billing_npi": "9900000022",
+    "billing_tin": "88-1000022",
+    "date_of_service": "2026-02-20",
+    "received_date": "2026-03-03",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "99214",
+        "units": 1,
+        "billed": 277.25
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P310"
+    ],
+    "status": "PENDED",
+    "total_billed": 277.25
+  },
+  "C1012": {
+    "claim_id": "C1012",
+    "member_id": "M50012",
+    "claim_type": "facility",
+    "billing_npi": "9900000066",
+    "billing_tin": "88-1000066",
+    "date_of_service": "2026-03-21",
+    "received_date": "2026-04-04",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "0450",
+        "units": 1,
+        "billed": 424.09
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P310"
+    ],
+    "status": "PENDED",
+    "total_billed": 424.09
+  },
+  "C1013": {
+    "claim_id": "C1013",
+    "member_id": "M50013",
+    "claim_type": "professional",
+    "billing_npi": "9900000011",
+    "billing_tin": "88-1000011",
+    "date_of_service": "2026-04-22",
+    "received_date": "2026-05-05",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "99214",
+        "units": 1,
+        "billed": 460.3
+      }
+    ],
+    "authorization": {
+      "number": "AUTH-70013",
+      "valid_from": "2026-01-01",
+      "valid_to": "2026-12-31"
+    },
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P412"
+    ],
+    "status": "PENDED",
+    "total_billed": 460.3
+  },
+  "C1014": {
+    "claim_id": "C1014",
+    "member_id": "M50014",
+    "claim_type": "facility",
+    "billing_npi": "9900000055",
+    "billing_tin": "88-1000055",
+    "date_of_service": "2026-05-23",
+    "received_date": "2026-06-06",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "0450",
+        "units": 1,
+        "billed": 725.55
+      }
+    ],
+    "authorization": {
+      "number": "AUTH-70014",
+      "valid_from": "2026-01-01",
+      "valid_to": "2026-12-31"
+    },
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P412"
+    ],
+    "status": "PENDED",
+    "total_billed": 725.55
+  },
+  "C1015": {
+    "claim_id": "C1015",
+    "member_id": "M50015",
+    "claim_type": "professional",
+    "billing_npi": "9900000044",
+    "billing_tin": "88-1000044",
+    "date_of_service": "2026-06-24",
+    "received_date": "2026-07-07",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "99214",
+        "units": 1,
+        "billed": 834.13
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P412"
+    ],
+    "status": "PENDED",
+    "total_billed": 834.13
+  },
+  "C1016": {
+    "claim_id": "C1016",
+    "member_id": "M50016",
+    "claim_type": "facility",
+    "billing_npi": "9900000033",
+    "billing_tin": "88-1000033",
+    "date_of_service": "2026-07-10",
+    "received_date": "2026-08-08",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "0450",
+        "units": 1,
+        "billed": 599.52
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P412"
+    ],
+    "status": "PENDED",
+    "total_billed": 599.52
+  },
+  "C1917": {
+    "claim_id": "C1917",
+    "member_id": "M50017",
+    "claim_type": "professional",
+    "billing_npi": "9900000022",
+    "billing_tin": "88-1000022",
+    "date_of_service": "2026-08-11",
+    "received_date": "2026-08-28",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "99214",
+        "units": 1,
+        "billed": 239.69
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [],
+    "status": "PAID",
+    "total_billed": 239.69
+  },
+  "C1017": {
+    "claim_id": "C1017",
+    "member_id": "M50017",
+    "claim_type": "professional",
+    "billing_npi": "9900000022",
+    "billing_tin": "88-1000022",
+    "date_of_service": "2026-08-11",
+    "received_date": "2026-09-01",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "99214",
+        "units": 1,
+        "billed": 239.69
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": "C1917",
+    "pend_codes": [
+      "P520"
+    ],
+    "status": "PENDED",
+    "total_billed": 239.69
+  },
+  "C1918": {
+    "claim_id": "C1918",
+    "member_id": "M50018",
+    "claim_type": "facility",
+    "billing_npi": "9900000066",
+    "billing_tin": "88-1000066",
+    "date_of_service": "2026-09-12",
+    "received_date": "2026-09-28",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "0450",
+        "units": 1,
+        "billed": 867.35
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [],
+    "status": "PAID",
+    "total_billed": 867.35
+  },
+  "C1018": {
+    "claim_id": "C1018",
+    "member_id": "M50018",
+    "claim_type": "facility",
+    "billing_npi": "9900000066",
+    "billing_tin": "88-1000066",
+    "date_of_service": "2026-09-12",
+    "received_date": "2026-10-02",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "0450",
+        "units": 1,
+        "billed": 867.35
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": "C1918",
+    "pend_codes": [
+      "P520"
+    ],
+    "status": "PENDED",
+    "total_billed": 867.35
+  },
+  "C1919": {
+    "claim_id": "C1919",
+    "member_id": "M50019",
+    "claim_type": "professional",
+    "billing_npi": "9900000011",
+    "billing_tin": "88-1000011",
+    "date_of_service": "2026-01-13",
+    "received_date": "2026-01-28",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "99214",
+        "units": 1,
+        "billed": 888.28
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [],
+    "status": "PAID",
+    "total_billed": 888.28
+  },
+  "C1019": {
+    "claim_id": "C1019",
+    "member_id": "M50019",
+    "claim_type": "professional",
+    "billing_npi": "9900000011",
+    "billing_tin": "88-1000011",
+    "date_of_service": "2026-01-13",
+    "received_date": "2026-02-03",
+    "frequency_code": "7",
+    "lines": [
+      {
+        "line": 1,
+        "code": "99214",
+        "units": 2,
+        "billed": 1776.56
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": "C1919",
+    "pend_codes": [
+      "P520"
+    ],
+    "status": "PENDED",
+    "original_claim_id": "C1919",
+    "total_billed": 1776.56
+  },
+  "C1920": {
+    "claim_id": "C1920",
+    "member_id": "M50020",
+    "claim_type": "facility",
+    "billing_npi": "9900000055",
+    "billing_tin": "88-1000055",
+    "date_of_service": "2026-02-14",
+    "received_date": "2026-02-28",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "0450",
+        "units": 1,
+        "billed": 849.68
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [],
+    "status": "PAID",
+    "total_billed": 849.68
+  },
+  "C1020": {
+    "claim_id": "C1020",
+    "member_id": "M50020",
+    "claim_type": "facility",
+    "billing_npi": "9900000055",
+    "billing_tin": "88-1000055",
+    "date_of_service": "2026-02-14",
+    "received_date": "2026-03-04",
+    "frequency_code": "7",
+    "lines": [
+      {
+        "line": 1,
+        "code": "0450",
+        "units": 2,
+        "billed": 1699.36
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": "C1920",
+    "pend_codes": [
+      "P520"
+    ],
+    "status": "PENDED",
+    "original_claim_id": "C1920",
+    "total_billed": 1699.36
+  },
+  "C1021": {
+    "claim_id": "C1021",
+    "member_id": "ZQXM50021",
+    "claim_type": "professional",
+    "billing_npi": "9900000044",
+    "billing_tin": "88-1000044",
+    "date_of_service": "2026-03-15",
+    "received_date": "2026-04-05",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "99214",
+        "units": 1,
+        "billed": 211.61
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": {
+      "home_plan": "Synthetic Blue Plan 812",
+      "local_role": "host",
+      "pricing_status": "AWAITING_HOST_PRICING"
+    },
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P630"
+    ],
+    "status": "PENDED",
+    "total_billed": 211.61
+  },
+  "C1022": {
+    "claim_id": "C1022",
+    "member_id": "ZQXM50022",
+    "claim_type": "facility",
+    "billing_npi": "9900000033",
+    "billing_tin": "88-1000033",
+    "date_of_service": "2026-04-16",
+    "received_date": "2026-05-06",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "0450",
+        "units": 1,
+        "billed": 636.0
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": {
+      "home_plan": "Synthetic Blue Plan 812",
+      "local_role": "host",
+      "pricing_status": "AWAITING_HOST_PRICING"
+    },
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P630"
+    ],
+    "status": "PENDED",
+    "total_billed": 636.0
+  },
+  "C1023": {
+    "claim_id": "C1023",
+    "member_id": "M50023",
+    "claim_type": "facility",
+    "billing_npi": "9900000055",
+    "billing_tin": "88-1000055",
+    "date_of_service": "2026-05-17",
+    "received_date": "2026-06-07",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "0120",
+        "units": 3,
+        "billed": 10639.77
+      },
+      {
+        "line": 2,
+        "code": "0250",
+        "units": 1,
+        "billed": 1569.0
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P715"
+    ],
+    "status": "PENDED",
+    "total_billed": 12208.77
+  },
+  "C1024": {
+    "claim_id": "C1024",
+    "member_id": "M50024",
+    "claim_type": "facility",
+    "billing_npi": "9900000066",
+    "billing_tin": "88-1000066",
+    "date_of_service": "2026-06-18",
+    "received_date": "2026-07-08",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "0120",
+        "units": 3,
+        "billed": 14145.83
+      },
+      {
+        "line": 2,
+        "code": "0250",
+        "units": 1,
+        "billed": 931.75
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P715"
+    ],
+    "status": "PENDED",
+    "total_billed": 15077.58
+  },
+  "C1025": {
+    "claim_id": "C1025",
+    "member_id": "ZQXM50025",
+    "claim_type": "professional",
+    "billing_npi": "9900000011",
+    "billing_tin": "88-1000011",
+    "date_of_service": "2026-07-19",
+    "received_date": "2026-08-01",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "99214",
+        "units": 1,
+        "billed": 413.91
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": {
+      "home_plan": "Synthetic Blue Plan 812",
+      "local_role": "host",
+      "pricing_status": "AWAITING_HOST_PRICING"
+    },
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P630"
+    ],
+    "status": "PENDED",
+    "total_billed": 413.91
+  },
+  "C1026": {
+    "claim_id": "C1026",
+    "member_id": "M50026",
+    "claim_type": "facility",
+    "billing_npi": "9900000055",
+    "billing_tin": "88-1000055",
+    "date_of_service": "2026-08-20",
+    "received_date": "2026-09-02",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "0450",
+        "units": 1,
+        "billed": 459.65
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P412"
+    ],
+    "status": "PENDED",
+    "total_billed": 459.65
+  },
+  "C1027": {
+    "claim_id": "C1027",
+    "member_id": "M50027",
+    "claim_type": "professional",
+    "billing_npi": "9900000044",
+    "billing_tin": "88-7777777",
+    "date_of_service": "2026-09-21",
+    "received_date": "2026-10-03",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "99214",
+        "units": 1,
+        "billed": 513.39
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P205"
+    ],
+    "status": "PENDED",
+    "total_billed": 513.39
+  },
+  "C1028": {
+    "claim_id": "C1028",
+    "member_id": "M50028",
+    "claim_type": "facility",
+    "billing_npi": "9900000033",
+    "billing_tin": "88-1000033",
+    "date_of_service": "2026-01-22",
+    "received_date": "2026-02-04",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "0450",
+        "units": 1,
+        "billed": 602.82
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P101"
+    ],
+    "status": "PENDED",
+    "total_billed": 602.82
+  },
+  "C1030": {
+    "claim_id": "C1030",
+    "member_id": "M50030",
+    "claim_type": "facility",
+    "billing_npi": "9900000066",
+    "billing_tin": "88-1000066",
+    "date_of_service": "2026-03-24",
+    "received_date": "2026-04-06",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "0450",
+        "units": 1,
+        "billed": 516.5
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P310"
+    ],
+    "status": "PENDED",
+    "total_billed": 516.5
+  },
+  "C1031": {
+    "claim_id": "C1031",
+    "member_id": "M50031",
+    "claim_type": "facility",
+    "billing_npi": "9900000033",
+    "billing_tin": "88-1000033",
+    "date_of_service": "2026-04-10",
+    "received_date": "2026-05-07",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "0120",
+        "units": 3,
+        "billed": 10786.03
+      },
+      {
+        "line": 2,
+        "code": "0250",
+        "units": 1,
+        "billed": 1365.44
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P715"
+    ],
+    "status": "PENDED",
+    "total_billed": 12151.47
+  },
+  "C1032": {
+    "claim_id": "C1032",
+    "member_id": "M50032",
+    "claim_type": "facility",
+    "billing_npi": "9900000055",
+    "billing_tin": "88-1000055",
+    "date_of_service": "2026-05-11",
+    "received_date": "2026-06-08",
+    "frequency_code": "1",
+    "lines": [
+      {
+        "line": 1,
+        "code": "0450",
+        "units": 1,
+        "billed": 627.95
+      }
+    ],
+    "authorization": null,
+    "attachments": [],
+    "bluecard": null,
+    "possible_duplicate_of": null,
+    "pend_codes": [
+      "P999"
+    ],
+    "status": "PENDED",
+    "total_billed": 627.95
+  }
+}

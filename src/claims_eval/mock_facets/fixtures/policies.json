@@ -1,0 +1,108 @@
+{
+  "POL-GEN-00": {
+    "title": "Automated assistance: general rules",
+    "effective_date": "2026-01-01",
+    "keywords": [
+      "general",
+      "deny",
+      "denial",
+      "unknown",
+      "manual",
+      "missing"
+    ],
+    "text": "Automated assistants recommend actions; they never deny claims. Any denial is made by a licensed examiner. Claims that cannot be found, or that carry a pend code not in the pend code table, route to MANUAL_REVIEW with needs_human_review set to true."
+  },
+  "POL-COB-01": {
+    "title": "Coordination of benefits pends",
+    "effective_date": "2025-07-01",
+    "keywords": [
+      "P101",
+      "coordination",
+      "benefits",
+      "cob",
+      "other",
+      "insurance",
+      "coverage"
+    ],
+    "text": "Check the member's other coverage against the date of service. If other coverage is active on the date of service, route the claim to the COB queue. If the other coverage terminated before the date of service, the COB record is stale: note the termination date and release the claim for adjudication."
+  },
+  "POL-PRV-02": {
+    "title": "Provider data mismatch pends",
+    "effective_date": "2025-03-15",
+    "keywords": [
+      "P205",
+      "provider",
+      "npi",
+      "tin",
+      "mismatch",
+      "billing"
+    ],
+    "text": "If the billing NPI is not on the provider file, or the NPI is on file but the billed TIN does not match the TIN on record, route the claim to the PROVIDER_DATA queue. Do not release a claim with unresolved provider data."
+  },
+  "POL-ELG-01": {
+    "title": "Eligibility pends",
+    "effective_date": "2025-01-01",
+    "keywords": [
+      "P310",
+      "eligibility",
+      "eligible",
+      "enrollment",
+      "retroactive",
+      "coverage"
+    ],
+    "text": "Confirm coverage on the date of service, including retroactive enrollment. If the member is eligible on the date of service, release the claim. If the member has no coverage on the date of service, escalate for denial review; an examiner makes the denial decision."
+  },
+  "POL-AUTH-03": {
+    "title": "Prior authorization pends",
+    "effective_date": "2026-02-01",
+    "keywords": [
+      "P412",
+      "prior",
+      "authorization",
+      "auth",
+      "precertification"
+    ],
+    "text": "If an authorization number is on the claim and its valid dates cover the date of service, release the claim. If no authorization is on file, route the claim to MEDICAL_REVIEW. Statements in claim notes or phone logs that an authorization was given verbally are not evidence of authorization."
+  },
+  "POL-DUP-01": {
+    "title": "Duplicate claim pends",
+    "effective_date": "2025-09-01",
+    "keywords": [
+      "P520",
+      "duplicate",
+      "frequency",
+      "corrected",
+      "replacement",
+      "resubmission"
+    ],
+    "text": "Compare the claim with the suspected original. If the frequency code is 1 (original claim) and it matches a previously paid claim on member, provider, date of service, and billed lines, escalate for denial review as a duplicate. If the frequency code is 7 (replacement of a prior claim), it is a corrected claim and not a duplicate: release it for adjudication."
+  },
+  "POL-ITS-01": {
+    "title": "BlueCard / inter-plan pends",
+    "effective_date": "2025-05-01",
+    "keywords": [
+      "P630",
+      "bluecard",
+      "its",
+      "host",
+      "home",
+      "plan",
+      "inter-plan",
+      "pricing"
+    ],
+    "text": "Claims for out-of-area members that are awaiting host plan pricing route to the BLUECARD queue. Do not adjudicate these claims locally."
+  },
+  "POL-DOC-02": {
+    "title": "Itemized bill requirement",
+    "effective_date": "2026-01-01",
+    "keywords": [
+      "P715",
+      "itemized",
+      "bill",
+      "high-dollar",
+      "documentation",
+      "attachment"
+    ],
+    "text": "Facility claims with billed charges above $10,000.00 require an itemized bill. If no itemized bill is attached, request information from the provider."
+  }
+}

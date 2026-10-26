@@ -1,0 +1,30 @@
+{
+  "P101": {
+    "description": "Possible coordination of benefits: other insurance on file for member",
+    "policy_ref": "POL-COB-01"
+  },
+  "P205": {
+    "description": "Billing provider not found or NPI/TIN mismatch with provider file",
+    "policy_ref": "POL-PRV-02"
+  },
+  "P310": {
+    "description": "Member eligibility not confirmed for date of service",
+    "policy_ref": "POL-ELG-01"
+  },
+  "P412": {
+    "description": "Service requires prior authorization; authorization not matched",
+    "policy_ref": "POL-AUTH-03"
+  },
+  "P520": {
+    "description": "Suspected duplicate of a previously processed claim",
+    "policy_ref": "POL-DUP-01"
+  },
+  "P630": {
+    "description": "BlueCard claim awaiting host plan pricing",
+    "policy_ref": "POL-ITS-01"
+  },
+  "P715": {
+    "description": "High-dollar facility claim missing itemized bill",
+    "policy_ref": "POL-DOC-02"
+  }
+}

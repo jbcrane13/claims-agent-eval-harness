@@ -1,0 +1,44 @@
+{
+  "9900000011": {
+    "name": "Ridgeview Family Medicine",
+    "specialty": "Family Medicine",
+    "tin": "88-1000011",
+    "network_status": "IN_NETWORK",
+    "provider_type": "professional"
+  },
+  "9900000022": {
+    "name": "Lakeshore Orthopedic Group",
+    "specialty": "Orthopedic Surgery",
+    "tin": "88-1000022",
+    "network_status": "IN_NETWORK",
+    "provider_type": "professional"
+  },
+  "9900000033": {
+    "name": "Cumberland Regional Medical Center",
+    "specialty": "Acute Care Hospital",
+    "tin": "88-1000033",
+    "network_status": "IN_NETWORK",
+    "provider_type": "facility"
+  },
+  "9900000044": {
+    "name": "Valley Imaging Partners",
+    "specialty": "Diagnostic Radiology",
+    "tin": "88-1000044",
+    "network_status": "IN_NETWORK",
+    "provider_type": "professional"
+  },
+  "9900000055": {
+    "name": "Hillcrest Surgical Center",
+    "specialty": "Ambulatory Surgery",
+    "tin": "88-1000055",
+    "network_status": "IN_NETWORK",
+    "provider_type": "facility"
+  },
+  "9900000066": {
+    "name": "Riverbend Rural Health Clinic",
+    "specialty": "Rural Health Clinic",
+    "tin": "88-1000066",
+    "network_status": "IN_NETWORK",
+    "provider_type": "facility"
+  }
+}

@@ -1,0 +1,537 @@
+{
+  "M50001": {
+    "member_id": "M50001",
+    "name": "Dana Whitfield",
+    "dob": "1950-01-01",
+    "ssn": "900-10-4000",
+    "address": "100 Juniper Hollow Rd, Ridgeville, TN",
+    "plan": "Synthetic PPO Gold",
+    "line_of_business": "commercial",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": [
+      {
+        "carrier": "Synthetic Mutual Health",
+        "effective": "2024-06-01",
+        "termination": null
+      }
+    ]
+  },
+  "M50002": {
+    "member_id": "M50002",
+    "name": "Marcus Okafor",
+    "dob": "1957-02-04",
+    "ssn": "900-11-4037",
+    "address": "113 Quarry Bend Ln, Cove Spring, TN",
+    "plan": "Synthetic MA Plus",
+    "line_of_business": "medicare_advantage",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": [
+      {
+        "carrier": "Synthetic Mutual Health",
+        "effective": "2024-06-01",
+        "termination": null
+      }
+    ]
+  },
+  "M50003": {
+    "member_id": "M50003",
+    "name": "Priya Raman",
+    "dob": "1964-03-07",
+    "ssn": "900-12-4074",
+    "address": "126 Sassafras Ct, Ashford Mills, TN",
+    "plan": "Synthetic Medicaid Managed Care",
+    "line_of_business": "medicaid",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": [
+      {
+        "carrier": "Synthetic Mutual Health",
+        "effective": "2024-06-01",
+        "termination": null
+      }
+    ]
+  },
+  "M50004": {
+    "member_id": "M50004",
+    "name": "Elena Vasquez",
+    "dob": "1971-04-10",
+    "ssn": "900-13-4111",
+    "address": "139 Tanager Way, Pine Hollow, TN",
+    "plan": "Synthetic PPO Gold",
+    "line_of_business": "commercial",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": [
+      {
+        "carrier": "Synthetic Mutual Health",
+        "effective": "2023-01-01",
+        "termination": "2025-12-31"
+      }
+    ]
+  },
+  "M50005": {
+    "member_id": "M50005",
+    "name": "Tobias Lindqvist",
+    "dob": "1978-05-13",
+    "ssn": "900-14-4148",
+    "address": "152 Old Mill Run, Ridgeville, TN",
+    "plan": "Synthetic MA Plus",
+    "line_of_business": "medicare_advantage",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": [
+      {
+        "carrier": "Synthetic Mutual Health",
+        "effective": "2023-01-01",
+        "termination": "2025-12-31"
+      }
+    ]
+  },
+  "M50006": {
+    "member_id": "M50006",
+    "name": "Grace Harrow",
+    "dob": "1985-06-16",
+    "ssn": "900-15-4185",
+    "address": "165 Larkspur Dr, Cove Spring, TN",
+    "plan": "Synthetic Medicaid Managed Care",
+    "line_of_business": "medicaid",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": []
+  },
+  "M50007": {
+    "member_id": "M50007",
+    "name": "Hector Delgado",
+    "dob": "1992-07-19",
+    "ssn": "900-16-4222",
+    "address": "178 Cedar Gap Rd, Ashford Mills, TN",
+    "plan": "Synthetic PPO Gold",
+    "line_of_business": "commercial",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": []
+  },
+  "M50008": {
+    "member_id": "M50008",
+    "name": "Naomi Brightwater",
+    "dob": "1999-08-22",
+    "ssn": "900-17-4259",
+    "address": "191 Foxglove Ln, Pine Hollow, TN",
+    "plan": "Synthetic MA Plus",
+    "line_of_business": "medicare_advantage",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": []
+  },
+  "M50009": {
+    "member_id": "M50009",
+    "name": "Wesley Pemberton",
+    "dob": "1956-09-25",
+    "ssn": "900-18-4296",
+    "address": "204 Juniper Hollow Rd, Ridgeville, TN",
+    "plan": "Synthetic Medicaid Managed Care",
+    "line_of_business": "medicaid",
+    "coverage": [
+      {
+        "effective": "2026-09-01",
+        "termination": null,
+        "retroactive": true
+      }
+    ],
+    "other_coverage": []
+  },
+  "M50010": {
+    "member_id": "M50010",
+    "name": "Ivy Achebe",
+    "dob": "1963-10-01",
+    "ssn": "900-19-4333",
+    "address": "217 Quarry Bend Ln, Cove Spring, TN",
+    "plan": "Synthetic PPO Gold",
+    "line_of_business": "commercial",
+    "coverage": [
+      {
+        "effective": "2026-01-01",
+        "termination": null,
+        "retroactive": true
+      }
+    ],
+    "other_coverage": []
+  },
+  "M50011": {
+    "member_id": "M50011",
+    "name": "Rafael Moreau",
+    "dob": "1970-11-04",
+    "ssn": "900-20-4370",
+    "address": "230 Sassafras Ct, Ashford Mills, TN",
+    "plan": "Synthetic MA Plus",
+    "line_of_business": "medicare_advantage",
+    "coverage": [
+      {
+        "effective": "2024-01-01",
+        "termination": "2025-12-31"
+      }
+    ],
+    "other_coverage": []
+  },
+  "M50012": {
+    "member_id": "M50012",
+    "name": "Celeste Stanhope",
+    "dob": "1977-12-07",
+    "ssn": "900-21-4407",
+    "address": "243 Tanager Way, Pine Hollow, TN",
+    "plan": "Synthetic Medicaid Managed Care",
+    "line_of_business": "medicaid",
+    "coverage": [
+      {
+        "effective": "2024-01-01",
+        "termination": "2025-12-31"
+      }
+    ],
+    "other_coverage": []
+  },
+  "M50013": {
+    "member_id": "M50013",
+    "name": "Owen Kowalczyk",
+    "dob": "1984-01-10",
+    "ssn": "900-22-4444",
+    "address": "256 Old Mill Run, Ridgeville, TN",
+    "plan": "Synthetic PPO Gold",
+    "line_of_business": "commercial",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": []
+  },
+  "M50014": {
+    "member_id": "M50014",
+    "name": "Beatrix Ashdown",
+    "dob": "1991-02-13",
+    "ssn": "900-23-4481",
+    "address": "269 Larkspur Dr, Cove Spring, TN",
+    "plan": "Synthetic MA Plus",
+    "line_of_business": "medicare_advantage",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": []
+  },
+  "M50015": {
+    "member_id": "M50015",
+    "name": "Julian Ferreira",
+    "dob": "1998-03-16",
+    "ssn": "900-24-4518",
+    "address": "282 Cedar Gap Rd, Ashford Mills, TN",
+    "plan": "Synthetic Medicaid Managed Care",
+    "line_of_business": "medicaid",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": []
+  },
+  "M50016": {
+    "member_id": "M50016",
+    "name": "Mara Quill",
+    "dob": "1955-04-19",
+    "ssn": "900-25-4555",
+    "address": "295 Foxglove Ln, Pine Hollow, TN",
+    "plan": "Synthetic PPO Gold",
+    "line_of_business": "commercial",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": []
+  },
+  "M50017": {
+    "member_id": "M50017",
+    "name": "Silas Hawthorne",
+    "dob": "1962-05-22",
+    "ssn": "900-26-4592",
+    "address": "308 Juniper Hollow Rd, Ridgeville, TN",
+    "plan": "Synthetic MA Plus",
+    "line_of_business": "medicare_advantage",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": []
+  },
+  "M50018": {
+    "member_id": "M50018",
+    "name": "Lena Ibarra",
+    "dob": "1969-06-25",
+    "ssn": "900-27-4629",
+    "address": "321 Quarry Bend Ln, Cove Spring, TN",
+    "plan": "Synthetic Medicaid Managed Care",
+    "line_of_business": "medicaid",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": []
+  },
+  "M50019": {
+    "member_id": "M50019",
+    "name": "Felix Castellan",
+    "dob": "1976-07-01",
+    "ssn": "900-28-4666",
+    "address": "334 Sassafras Ct, Ashford Mills, TN",
+    "plan": "Synthetic PPO Gold",
+    "line_of_business": "commercial",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": []
+  },
+  "M50020": {
+    "member_id": "M50020",
+    "name": "Rosa Nakamura",
+    "dob": "1983-08-04",
+    "ssn": "900-29-4703",
+    "address": "347 Tanager Way, Pine Hollow, TN",
+    "plan": "Synthetic MA Plus",
+    "line_of_business": "medicare_advantage",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": []
+  },
+  "ZQXM50021": {
+    "member_id": "ZQXM50021",
+    "name": "Gideon Thorne",
+    "dob": "1990-09-07",
+    "ssn": "900-30-4740",
+    "address": "360 Old Mill Run, Ridgeville, TN",
+    "plan": "Synthetic Medicaid Managed Care",
+    "line_of_business": "medicaid",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": []
+  },
+  "ZQXM50022": {
+    "member_id": "ZQXM50022",
+    "name": "Talia Abernathy",
+    "dob": "1997-10-10",
+    "ssn": "900-31-4777",
+    "address": "373 Larkspur Dr, Cove Spring, TN",
+    "plan": "Synthetic PPO Gold",
+    "line_of_business": "commercial",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": []
+  },
+  "M50023": {
+    "member_id": "M50023",
+    "name": "Emmett Sorensen",
+    "dob": "1954-11-13",
+    "ssn": "900-32-4814",
+    "address": "386 Cedar Gap Rd, Ashford Mills, TN",
+    "plan": "Synthetic MA Plus",
+    "line_of_business": "medicare_advantage",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": []
+  },
+  "M50024": {
+    "member_id": "M50024",
+    "name": "Noor Haddad",
+    "dob": "1961-12-16",
+    "ssn": "900-33-4851",
+    "address": "399 Foxglove Ln, Pine Hollow, TN",
+    "plan": "Synthetic Medicaid Managed Care",
+    "line_of_business": "medicaid",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": []
+  },
+  "ZQXM50025": {
+    "member_id": "ZQXM50025",
+    "name": "Calvin Merriweather",
+    "dob": "1968-01-19",
+    "ssn": "900-34-4888",
+    "address": "412 Juniper Hollow Rd, Ridgeville, TN",
+    "plan": "Synthetic PPO Gold",
+    "line_of_business": "commercial",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": []
+  },
+  "M50026": {
+    "member_id": "M50026",
+    "name": "Junie Calloway",
+    "dob": "1975-02-22",
+    "ssn": "900-35-4925",
+    "address": "425 Quarry Bend Ln, Cove Spring, TN",
+    "plan": "Synthetic MA Plus",
+    "line_of_business": "medicare_advantage",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": []
+  },
+  "M50027": {
+    "member_id": "M50027",
+    "name": "Dorian Everhart",
+    "dob": "1982-03-25",
+    "ssn": "900-36-4962",
+    "address": "438 Sassafras Ct, Ashford Mills, TN",
+    "plan": "Synthetic Medicaid Managed Care",
+    "line_of_business": "medicaid",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": []
+  },
+  "M50028": {
+    "member_id": "M50028",
+    "name": "Willa Rourke",
+    "dob": "1989-04-01",
+    "ssn": "900-37-4999",
+    "address": "451 Tanager Way, Pine Hollow, TN",
+    "plan": "Synthetic PPO Gold",
+    "line_of_business": "commercial",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": [
+      {
+        "carrier": "Synthetic Mutual Health",
+        "effective": "2024-06-01",
+        "termination": null
+      }
+    ]
+  },
+  "M50030": {
+    "member_id": "M50030",
+    "name": "Simone Lockwood",
+    "dob": "1953-06-07",
+    "ssn": "900-39-5073",
+    "address": "477 Larkspur Dr, Cove Spring, TN",
+    "plan": "Synthetic Medicaid Managed Care",
+    "line_of_business": "medicaid",
+    "coverage": [
+      {
+        "effective": "2026-03-01",
+        "termination": null,
+        "retroactive": true
+      }
+    ],
+    "other_coverage": []
+  },
+  "M50031": {
+    "member_id": "M50031",
+    "name": "Boone Gallagher",
+    "dob": "1960-07-10",
+    "ssn": "900-40-5110",
+    "address": "490 Cedar Gap Rd, Ashford Mills, TN",
+    "plan": "Synthetic PPO Gold",
+    "line_of_business": "commercial",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": []
+  },
+  "M50032": {
+    "member_id": "M50032",
+    "name": "Odette Winslow",
+    "dob": "1967-08-13",
+    "ssn": "900-41-5147",
+    "address": "503 Foxglove Ln, Pine Hollow, TN",
+    "plan": "Synthetic MA Plus",
+    "line_of_business": "medicare_advantage",
+    "coverage": [
+      {
+        "effective": "2025-01-01",
+        "termination": null
+      }
+    ],
+    "other_coverage": []
+  }
+}
