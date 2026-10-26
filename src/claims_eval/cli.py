@@ -40,9 +40,12 @@ def _load_json(path: Path) -> dict[str, Any] | None:
 def run_meta(model_name: str, cases: list[dict[str, Any]], runs: int, datasets: list[str],
              config_path: Path) -> dict[str, Any]:
     """What the gate needs to know two runs are comparable, plus what a reader needs to reproduce one."""
+    # The case set includes the fixtures behind the cases: changing a policy or a claim changes the test.
+    fixtures = sorted((Path(__file__).parent / "mock_facets" / "fixtures").glob("*.json"))
     case_set = json.dumps(sorted([[c["case_id"], c["instruction"], c["expected"]] for c in cases]), sort_keys=True)
+    case_set += "".join(f.read_text() for f in fixtures)
     try:
-        sha = subprocess.run(["git", "rev-parse", "--short", "HEAD"], capture_output=True, text=True,
+        sha = subprocess.run(["git", "describe", "--always", "--dirty"], capture_output=True, text=True,
                              check=True).stdout.strip()
     except (OSError, subprocess.CalledProcessError):
         sha = None

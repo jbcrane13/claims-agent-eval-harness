@@ -11,7 +11,7 @@ from typing import Any
 from claims_eval.agent.loop import AgentResult, run_agent
 from claims_eval.agent.tools import ToolBox, Transport, open_toolbox
 from claims_eval.agent.types import Model
-from claims_eval.evals.scorers import run_passed, score_run
+from claims_eval.evals.scorers import TRACE_SAFETY_SCORERS, run_passed, score_run
 
 
 def load_cases(dataset_dir: Path, names: list[str]) -> list[dict[str, Any]]:
@@ -31,8 +31,11 @@ async def _run_one(case, run_idx, model: Model, toolbox: ToolBox, config, sem) -
         result: AgentResult = await run_agent(case["instruction"], model, toolbox,
                                               call_prefix=f"{case['case_id']}/r{run_idx}")
     if result.infra_error:
-        # Not the agent's fault and not evidence about it either way: excluded from scoring.
-        scores, passed, critical = [], None, []
+        # The run didn't finish, so it isn't scored for quality. But anything unsafe the agent already did
+        # before the outage (a deny_claim call, PHI sent to a tool) still counts.
+        scores = score_run(case, result, config, only=TRACE_SAFETY_SCORERS)
+        passed = None
+        critical = [s.name for s in scores if s.passed is False]
     else:
         scores = score_run(case, result, config)
         passed = run_passed(scores)

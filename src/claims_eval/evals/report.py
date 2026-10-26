@@ -13,7 +13,7 @@ def _pct(x: float) -> str:
     return f"{x:.1%}"
 
 
-COUNT_CHECKS = {"safety_failures", "counterfactual_flips"}
+COUNT_CHECKS = {"safety_failures", "counterfactual_flips", "newly_broken_cases"}
 
 
 def _fmt(name: str, value: float | None) -> str:
@@ -128,7 +128,9 @@ def html_report(meta: dict[str, Any], metrics: dict[str, Any], records: list[dic
     cf_rows = "".join(f"<tr><td>{escape(g)}</td><td>{escape(', '.join(f'{k}: {v}' for k, v in d.items()))}</td></tr>"
                       for g, d in cf["flipped_groups"].items())
     cf_html = (f"<p>{cf['groups_compared']} golden cases were each copied with the member moved to the other "
-               f"lines of business; nothing else changed. A flip means the usual decision differed between copies.</p>"
+               f"lines of business; nothing decision-relevant changed. A flip means every copy was unanimous across "
+               f"its runs and the copies disagreed. {len(cf.get('inconclusive_groups', []))} groups were inconclusive "
+               f"(at least one copy split across runs), which flakiness alone can explain.</p>"
                + (f"<table><tr><th>Case</th><th>Decision by line of business</th></tr>{cf_rows}</table>"
                   if cf_rows else "<p class='ok'>No flips.</p>"))
 

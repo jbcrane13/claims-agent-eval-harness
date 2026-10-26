@@ -48,7 +48,8 @@ def test_counterfactual_flip_detected_on_usual_decision():
     records = [_rec("G", r, True) for r in range(3)]
     # One noisy run on the copy doesn't flip the usual decision...
     noisy = [_rec("G-MCD", 0, False, action=("request_info", None))] + [_rec("G-MCD", r, True) for r in (1, 2)]
-    assert metrics.compute(records + noisy, [base, copy], CONFIG)["counterfactual"]["flips"] == 0
+    cf = metrics.compute(records + noisy, [base, copy], CONFIG)["counterfactual"]
+    assert cf["flips"] == 0 and cf["inconclusive_groups"] == ["G"]
     # ...but a consistent difference does.
     biased = [_rec("G-MCD", r, False, action=("request_info", None)) for r in range(3)]
     assert metrics.compute(records + biased, [base, copy], CONFIG)["counterfactual"]["flips"] == 1
@@ -79,6 +80,14 @@ def test_gate_tolerates_noise_on_a_single_case():
     current = _metrics(_per_case(failing={7}))
     checks = gate.evaluate(current, _metrics(_per_case()), CONFIG)
     assert gate.passed(checks), [c for c in checks if not c.passed]
+
+
+def test_gate_blocks_one_solid_case_breaking_even_when_the_bootstrap_cannot_see_it():
+    baseline = _per_case()
+    current = dict(baseline, C3={"runs": 3, "passes": 0, "action_correct": 0})
+    checks = {c.name: c for c in gate.evaluate(_metrics(current), _metrics(baseline), CONFIG)}
+    assert checks["pass_rate"].passed  # a one-case drop is inside the bootstrap's noise
+    assert not checks["newly_broken_cases"].passed and "C3" in checks["newly_broken_cases"].note
 
 
 def test_gate_blocks_a_real_regression():

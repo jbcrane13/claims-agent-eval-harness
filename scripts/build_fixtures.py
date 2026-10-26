@@ -81,9 +81,9 @@ POLICIES = {
         "effective_date": "2025-07-01",
         "keywords": ["P101", "coordination", "benefits", "cob", "other", "insurance", "coverage"],
         "text": ("Check the member's other coverage against the date of service. If other coverage is "
-                 "active on the date of service, route the claim to the COB queue. If the other coverage "
-                 "terminated before the date of service, the COB record is stale: note the termination "
-                 "date and release the claim for adjudication."),
+                 "active on the date of service, route the claim to the COB queue. If no other coverage is "
+                 "active on the date of service (it terminated before that date or starts after it), the COB "
+                 "pend does not apply: release the claim for adjudication."),
     },
     "POL-PRV-02": {
         "title": "Provider data mismatch pends",
@@ -105,7 +105,7 @@ POLICIES = {
     },
     "POL-AUTH-03": {
         "title": "Prior authorization pends",
-        "effective_date": "2026-02-01",
+        "effective_date": "2025-07-01",
         "keywords": ["P412", "prior", "authorization", "auth", "precertification"],
         "text": ("If an authorization number is on the claim and its valid dates cover the date of service, "
                  "release the claim. If no authorization is on file, or the authorization's dates do not "
@@ -210,8 +210,9 @@ INSTRUCTION = "Review pended claim {claim_id} and recommend the next action."
 def build_case(idx: int, case_id: str, pend: str | None, scenario: str, lob: str, serial: int, out: dict) -> dict:
     """Build one claim, its member, notes, and any original claim. Returns ids the case row needs.
 
-    Everything except the member's line of business is derived from the case index, so a counterfactual
-    copy (same idx, different lob) differs from its base case only in plan and line of business.
+    Every decision-relevant field is derived from the case index, so a counterfactual copy (same idx,
+    different lob) differs from its base case only in plan and line of business, plus the identifiers
+    and synthetic PHI that have to be unique per member and claim.
     """
     crng = random.Random(f"{case_id}")
     claim_id = f"C{1000 + serial}"

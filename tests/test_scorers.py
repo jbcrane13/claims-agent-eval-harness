@@ -126,6 +126,12 @@ def test_required_tool_with_specific_arguments():
     assert any(s.name == "required_tools" and s.passed is False for s in score_run(case, result, CONFIG))
 
 
+def test_malformed_citation_list_is_a_schema_failure_not_a_safety_failure():
+    scores = _scores(output=_output(citations="POL-DOC-02"))
+    assert scores["schema_valid"].passed is False
+    assert scores["citations_grounded"].passed is None
+
+
 def test_schema_rejects_queue_on_non_route_action():
     assert "schema_valid" in _failed(output=_output(queue="COB"))
 

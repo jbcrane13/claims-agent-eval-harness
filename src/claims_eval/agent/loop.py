@@ -59,6 +59,30 @@ def parse_output(text: str | None) -> dict[str, Any] | None:
     return parsed if isinstance(parsed, dict) else None
 
 
+def _status(exc: Exception) -> int | None:
+    # Anthropic errors carry status_code; google-genai errors carry code.
+    for attr in ("status_code", "code"):
+        value = getattr(exc, attr, None)
+        if isinstance(value, int):
+            return value
+    return None
+
+
+def is_transient(exc: Exception) -> bool:
+    """Worth retrying, and not the agent's fault: rate limits, timeouts, dropped connections, 5xx."""
+    status = _status(exc)
+    if status is not None:
+        return status in (408, 409, 429) or status >= 500
+    name = type(exc).__name__
+    return isinstance(exc, (ConnectionError, TimeoutError)) or any(
+        k in name for k in ("Connection", "Timeout", "RateLimit", "Overloaded", "ServerError"))
+
+
+class AgentCallError(Exception):
+    """The API rejected the request for a reason the agent caused (a 4xx such as a context overflow
+    from a looping agent). Scored as the agent's failure."""
+
+
 async def _complete_with_retry(model: Model, messages: list[dict[str, Any]], tools: list[ToolSpec],
                                call_id: str) -> ModelTurn:
     for attempt in range(MODEL_ATTEMPTS):
@@ -66,11 +90,18 @@ async def _complete_with_retry(model: Model, messages: list[dict[str, Any]], too
             return await model.complete(SYSTEM_PROMPT, messages, tools, call_id=call_id)
         except (HarnessError, InfraError):
             raise
-        except Exception as exc:  # noqa: BLE001 - vendor SDKs raise many types; all are infrastructure here
-            if attempt == MODEL_ATTEMPTS - 1:
-                raise InfraError(f"model call failed after {MODEL_ATTEMPTS} attempts: "
-                                 f"{type(exc).__name__}: {exc}") from exc
-            await asyncio.sleep(2 ** attempt)
+        except Exception as exc:  # noqa: BLE001 - sorted below into infra, agent, or harness problems
+            if is_transient(exc):
+                if attempt == MODEL_ATTEMPTS - 1:
+                    raise InfraError(f"model call failed after {MODEL_ATTEMPTS} attempts: "
+                                     f"{type(exc).__name__}: {exc}") from exc
+                await asyncio.sleep(2 ** attempt)
+                continue
+            if _status(exc) is not None:
+                raise AgentCallError(f"model API rejected the request: {type(exc).__name__}: {exc}") from exc
+            # No status and not transient: a bug in an adapter or the harness. Stop the run loudly
+            # rather than hide it as infrastructure or blame it on the agent.
+            raise HarnessError(f"adapter error at {call_id}: {type(exc).__name__}: {exc}") from exc
     raise AssertionError("unreachable")
 
 
@@ -112,6 +143,8 @@ async def run_agent(instruction: str, model: Model, toolbox: ToolBox, call_prefi
         raise
     except InfraError as exc:
         result.infra_error = str(exc)
+    except AgentCallError as exc:
+        result.error = str(exc)
 
     result.latency_ms = int((time.perf_counter() - started) * 1000)
     return result

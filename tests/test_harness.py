@@ -10,7 +10,7 @@ from claims_eval.agent.cassette import RecordingModel, ReplayModel
 from claims_eval.agent.loop import run_agent
 from claims_eval.agent.simulated import SimulatedModel
 from claims_eval.agent.tools import open_toolbox
-from claims_eval.agent.types import HarnessError, ModelTurn
+from claims_eval.agent.types import HarnessError, ModelTurn, ToolCall
 from claims_eval.evals import metrics
 from claims_eval.evals.judge import cohen_kappa, judge_rationale
 from claims_eval.evals.runner import load_cases, run_suite
@@ -88,7 +88,71 @@ async def test_api_failure_is_an_infra_error_not_an_agent_failure(monkeypatch):
         return None
     monkeypatch.setattr(loop.asyncio, "sleep", no_sleep)
     records = await run_suite([CASES[0]], _FlakyModel(), CONFIG, runs=1, transport="inproc")
-    assert records[0]["infra_error"] and records[0]["passed"] is None and records[0]["scores"] == []
+    r = records[0]
+    assert r["infra_error"] and r["passed"] is None and r["critical_failures"] == []
+    assert {s["name"] for s in r["scores"]} == {"forbidden_tools", "phi_leak"}  # trace safety still checked
+
+
+class _DenyThenOutage:
+    """Calls deny_claim, then the API goes down."""
+    name = "deny-then-outage"
+
+    async def complete(self, system, messages, tools, call_id):
+        if len(messages) == 1:
+            return ModelTurn(text=None, tool_calls=[ToolCall("d1", "deny_claim", {"claim_id": "C1001", "reason": "x"})])
+        raise ConnectionError("503 Service Unavailable")
+
+
+async def test_unsafe_action_before_an_outage_still_counts(monkeypatch):
+    import claims_eval.agent.loop as loop
+
+    async def no_sleep(_):
+        return None
+    monkeypatch.setattr(loop.asyncio, "sleep", no_sleep)
+    records = await run_suite([CASES[0]], _DenyThenOutage(), CONFIG, runs=1, transport="inproc")
+    assert records[0]["infra_error"] and records[0]["critical_failures"] == ["forbidden_tools"]
+    assert metrics.compute(records, CASES, CONFIG)["safety_failures"] == 1
+
+
+class _Raises:
+    name = "raises"
+
+    def __init__(self, exc):
+        self.exc = exc
+
+    async def complete(self, system, messages, tools, call_id):
+        raise self.exc
+
+
+class _BadRequest(Exception):
+    status_code = 400
+
+
+async def test_error_classification():
+    async with open_toolbox("inproc") as tb:
+        # A 4xx is the agent's doing (say, a context overflow from looping): scored, not excluded.
+        result = await run_agent("Review C1001.", _Raises(_BadRequest("prompt is too long")), tb, "X/r0")
+        assert result.error and not result.infra_error
+        # An exception with no status that isn't transient is a harness bug: stop loudly.
+        with pytest.raises(HarnessError, match="adapter error"):
+            await run_agent("Review C1001.", _Raises(KeyError("candidates")), tb, "X/r0")
+
+
+async def test_counterfactual_copy_safety_failures_count():
+    copy = next(c for c in CASES if c["dataset"] == "counterfactual" and c["scenario"] == "cob_active")
+    records = await run_suite([copy], _DenyThenOutage(), CONFIG, runs=1, transport="inproc")
+    m = metrics.compute(records, CASES, CONFIG)
+    assert m["safety_failures"] == 1 and m["safety_failures_by_dataset"] == {"counterfactual": 1}
+
+
+def test_every_case_falls_under_an_effective_policy():
+    from claims_eval.mock_facets import data
+    for case in CASES:
+        claim = data.claims().get(case["claim_id"])
+        if not claim:
+            continue
+        for doc_id in case["expected"]["required_citations"]:
+            assert data.policies()[doc_id]["effective_date"] <= claim["date_of_service"], case["case_id"]
 
 
 async def test_cassette_replays_and_detects_drift(tmp_path):
